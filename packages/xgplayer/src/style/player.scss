@@ -5,11 +5,12 @@
 // xgplayer-volume 4
 // xgplayer-definition 5
 // xgplayer-bullet-btn 6
-// xgplayer-textTrack 7
-// xgplayer-playback 8
-// xgplayer-rotate 9
-// xgplayer-screenShot 10
-// xgplayer-fullscreen 11
+// xgplayer-panel 7
+// xgplayer-textTrack 8
+// xgplayer-playback 9
+// xgplayer-rotate 10
+// xgplayer-screenShot 11
+// xgplayer-fullscreen 12
 
 @import "player/animation";
 @import "player/download";
@@ -75,6 +76,7 @@
 @import "player/replay";
 @import "player/enter";
 @import "player/screenShot";
+@import "player/panel";
 
 .xgplayer-poster{
     position: absolute;

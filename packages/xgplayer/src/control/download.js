@@ -16,7 +16,7 @@ const download = function () {
   let tips = util.createDom('xg-tips', tipsDownload, {}, 'xgplayer-tips')
   downloadEl.appendChild(tips)
 
-  player.download = function() {
+  player.download = function () {
     const url = getAbsoluteURL(player.config.url)
     downloadUtil(url)
   }

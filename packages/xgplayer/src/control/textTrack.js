@@ -5,7 +5,7 @@ let textTrack = function () {
     return
   }
   let player = this, util = Player.util, sniffer = Player.sniffer
-  let ul = util.createDom('xg-textTrack', '', {tabindex: 7}, 'xgplayer-textTrack'), root = player.controls
+  let ul = util.createDom('xg-textTrack', '', {tabindex: 8}, 'xgplayer-textTrack'), root = player.controls
   let list = player.config.textTrack
   if (list && Array.isArray(list) && list.length > 1) {
     util.addClass(player.root, 'xgplayer-is-textTrack')
