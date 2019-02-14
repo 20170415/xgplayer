@@ -207,7 +207,9 @@ let danmu = function () {
         e.preventDefault()
         e.stopPropagation()
         let showareaValue = e.target.value
-        danmuConfig.area.end = showareaValue / 100
+        player.danmu.config.area.end = showareaValue / 100
+        player.config.danmu.area.end = showareaValue / 100
+        player.danmu.bulletBtn.main.channel.resize()
       })
       let danmuspeed = document.querySelector('.xgplayer-danmuspeed-line')
       danmuspeed.addEventListener('input', function (e) {
