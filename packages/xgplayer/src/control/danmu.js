@@ -36,25 +36,25 @@ let danmu = function () {
                                                   </xg-hidemode>
                                                   <xg-transparency class="xgplayer-transparency">
                                                     <span>不透明度</span>
-                                                    <input class="xgplayer-transparency-drag xgplayer-transparency-color xgplayer-transparency-bar xgplayer-transparency-gradient" type="range" min="0" max="100" step="0.1" value="0"></input>
+                                                    <input class="xgplayer-transparency-line xgplayer-transparency-color xgplayer-transparency-bar xgplayer-transparency-gradient" type="range" min="0" max="100" step="0.1" value="50"></input>
                                                   </xg-transparency>
                                                   <xg-showarea class="xgplayer-showarea">
                                                     <div class="xgplayer-showarea-mode">
-                                                      <span class="xgplayer-showarea-mode-item">0</span><span class="xgplayer-showarea-mode-item">1/4</span><span class="xgplayer-showarea-mode-item">1/2</span><span class="xgplayer-showarea-mode-item">3/4</span><span class="xgplayer-showarea-mode-item">1</span>
+                                                      <span class="xgplayer-showarea-mode-item xgplayer-showarea-zero">0</span><span class="xgplayer-showarea-mode-item xgplayer-showarea-onequarters">1/4</span><span class="xgplayer-showarea-mode-item xgplayer-showarea-twoquarters">1/2</span><span class="xgplayer-showarea-mode-item xgplayer-showarea-threequarters">3/4</span><span class="xgplayer-showarea-mode-item xgplayer-showarea-full">1</span>
                                                     </div>
                                                     <span>显示区域</span>
                                                     <input class="xgplayer-showarea-line xgplayer-showarea-color xgplayer-showarea-bar xgplayer-gradient" type="range" min="0" max="100" step="25" value="50">
                                                   </xg-showarea>
                                                   <xg-danmuspeed class="xgplayer-danmuspeed">
                                                     <div class="xgplayer-danmuspeed-mode">
-                                                      <span class="xgplayer-danmuspeed-mode-item">慢</span><span class="xgplayer-danmuspeed-mode-item">中</span><span class="xgplayer-danmuspeed-mode-item">快</span>
+                                                      <span class="xgplayer-danmuspeed-mode-item xgplayer-danmuspeed-slow">慢</span><span class="xgplayer-danmuspeed-mode-item xgplayer-danmuspeed-middle">中</span><span class="xgplayer-danmuspeed-mode-item xgplayer-danmuspeed-fast">快</span>
                                                     </div>
                                                     <span>弹幕速度</span>
                                                     <input class="xgplayer-danmuspeed-line xgplayer-danmuspeed-color xgplayer-danmuspeed-bar xgplayer-danmuspeed-gradient" type="range" min="50" max="150" step="50" value="100">
                                                   </xg-danmuspeed>
                                                   <xg-danmufont class="xgplayer-danmufont">
                                                     <div class="xgplayer-danmufont-mode">
-                                                      <span class="xgplayer-danmufont-mode-item">小</span><span class="xgplayer-danmufont-mode-item">中</span><span class="xgplayer-danmufont-mode-item">大</span>
+                                                      <span class="xgplayer-danmufont-mode-item xgplayer-danmufont-small">小</span><span class="xgplayer-danmufont-mode-item xgplayer-danmufont-middle">中</span><span class="xgplayer-danmufont-mode-item xgplayer-danmufont-large">大</span>
                                                     </div>
                                                     <span>字体大小</span>
                                                     <input class="xgplayer-danmufont-line xgplayer-danmufont-color xgplayer-danmufont-bar xgplayer-danmufont-gradient" type="range" min="10" max="30" step="10" value="20">
@@ -160,46 +160,27 @@ let danmu = function () {
             if (hidemodeArray[keys].getAttribute('id') !== 'true') {
               hidemodeArray[keys].style.color = '#ed1e79'
               hidemodeArray[keys].setAttribute('id', 'true')
-              if (keys !== 'color') {
-                player.danmu.hide(keys)
-              } else {
-                danmuConfig.comments.forEach(item => {
-                  if (item.color === true) {
-                    item.style.display = 'none'
-                  }
-                })
-              }
+              player.danmu.hide(keys)
             } else {
               hidemodeArray[keys].style.color = '#eee'
               hidemodeArray[keys].setAttribute('id', 'false')
-              if (keys !== 'color') {
-                danmuConfig.comments.forEach(item => {
-                  if (keys === item.mode) {
-                    player.danmu.show(keys)
-                  }
-                })
-              } else {
-                danmuConfig.comments.forEach(item => {
-                  if (item.color === true) {
-                    item.style.display = 'block'
-                  }
-                })
-              }
+              player.danmu.show(keys)
             }
           })
         })
       }
-      let xgplayerTransparencyDrag = document.querySelector('.xgplayer-transparency-drag')
-      xgplayerTransparencyDrag.addEventListener('input', function (e) {
+      let transparency = document.querySelector('.xgplayer-transparency-line')
+      let transparencyGradient = document.querySelector('.xgplayer-transparency-gradient')
+      let transparencyValue = 50
+      transparencyGradient.style.background = 'linear-gradient(to right, #ed1e79 0%, #ed1e79 ' + transparencyValue + '%, #aaa ' + transparencyValue + '%, #aaa)'
+      transparency.addEventListener('input', function (e) {
         e.preventDefault()
         e.stopPropagation()
-        let transparencyValue = e.target.value
+        transparencyValue = e.target.value
         // TODO compatibility
-        // document.querySelector('.webkitgradient').style.background = '-webkit-linear-gradient(left, red 0%, red ' + played + '%, #eee ' + played + '%, #eee)'
-        // document.querySelector('.mozgradient').style.background = '-moz-linear-gradient(left, red 0%, red ' + played + '%, #eee ' + played + '%, #eee)'
-        document.querySelector('.xgplayer-transparency-gradient').style.background = 'linear-gradient(to right, #ed1e79 0%, #ed1e79 ' + transparencyValue + '%, #aaa ' + transparencyValue + '%, #aaa)'
+        transparencyGradient.style.background = 'linear-gradient(to right, #ed1e79 0%, #ed1e79 ' + transparencyValue + '%, #aaa ' + transparencyValue + '%, #aaa)'
         danmuConfig.comments.forEach(item => {
-          item.style.opacity = (100 - transparencyValue) / 100
+          item.style.opacity = transparencyValue / 100
         })
       })
       let showarea = document.querySelector('.xgplayer-showarea-line')
