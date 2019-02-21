@@ -70,7 +70,19 @@
     cursor: pointer;
   }
 }
-
+@mixin dot($panelContent, $marginLeft) {
+  .xgplayer-#{$panelContent}-dot{
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    border: 3px solid #aaa;
+    border-radius: 50%;
+    background-color: #aaa;
+    margin-left: #{$marginLeft}px;
+    margin-top: 4.5px;
+    z-index: -1;
+  }
+}
 .xgplayer-panel{
   outline: none;
   order: 7;
@@ -117,8 +129,6 @@
     li{
       margin: 0 12px;
       font-size: 11px;
-    }
-    li:hover {
       color: #aaa;
     }
     &-font{
@@ -135,6 +145,7 @@
     margin-top: 10px;
     &-mode{
       margin-left: 58px;
+      color: #aaa;
       &-item{
         font-size: 11px;
         margin: 0 10px;
@@ -150,15 +161,22 @@
       margin-left: 6px;
     }
     &-full{
-      margin-right: 6px;
+      margin-right: 4px;
+      margin-left: 12px;
     }
     @include xgplayer(showarea);
+    @include dot(showarea-zero, 14);
+    @include dot(showarea-onequarters, 51);
+    @include dot(showarea-twoquarters, 86);
+    @include dot(showarea-threequarters, 120);
+    @include dot(showarea-full, 155)
   }
   .xgplayer-danmuspeed{
     display: block;
     margin-top: 10px;
     &-mode{
       margin-left: 42px;
+      color: #aaa;
       &-item{
         font-size: 11px;
         margin: 0 25px;
@@ -168,16 +186,20 @@
       margin-left: 31px;
     }
     &-fast{
-      margin-left: 30px;
+      margin-left: 32px;
       margin-right: 8px;
     }
     @include xgplayer(danmuspeed);
+    @include dot(danmuspeed-slow, 14);
+    @include dot(danmuspeed-middle, 84);
+    @include dot(danmuspeed-fast, 155)
   }
   .xgplayer-danmufont{
     display: block;
     margin-top: 10px;
     &-mode{
       margin-left: 42px;
+      color: #aaa;
       &-item{
         font-size: 11px;
         margin: 0 25px;
@@ -187,9 +209,12 @@
       margin-left: 31px;
     }
     &-large{
-      margin-left: 30px;
+      margin-left: 32px;
       margin-right: 8px;
     }
     @include xgplayer(danmufont);
+    @include dot(danmufont-small, 14);
+    @include dot(danmufont-middle, 84);
+    @include dot(danmufont-large, 155);
   }
 }

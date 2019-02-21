@@ -42,21 +42,21 @@ let danmu = function () {
                                                     <div class="xgplayer-showarea-mode">
                                                       <span class="xgplayer-showarea-mode-item xgplayer-showarea-zero">0</span><span class="xgplayer-showarea-mode-item xgplayer-showarea-onequarters">1/4</span><span class="xgplayer-showarea-mode-item xgplayer-showarea-twoquarters">1/2</span><span class="xgplayer-showarea-mode-item xgplayer-showarea-threequarters">3/4</span><span class="xgplayer-showarea-mode-item xgplayer-showarea-full">1</span>
                                                     </div>
-                                                    <span>显示区域</span>
+                                                    <span>显示区域</span><span class="xgplayer-showarea-zero-dot"></span><span class="xgplayer-showarea-onequarters-dot"></span><span class="xgplayer-showarea-twoquarters-dot"></span><span class="xgplayer-showarea-threequarters-dot"></span><span class="xgplayer-showarea-full-dot"></span>
                                                     <input class="xgplayer-showarea-line xgplayer-showarea-color xgplayer-showarea-bar xgplayer-gradient" type="range" min="0" max="100" step="25" value="50">
                                                   </xg-showarea>
                                                   <xg-danmuspeed class="xgplayer-danmuspeed">
                                                     <div class="xgplayer-danmuspeed-mode">
                                                       <span class="xgplayer-danmuspeed-mode-item xgplayer-danmuspeed-slow">慢</span><span class="xgplayer-danmuspeed-mode-item xgplayer-danmuspeed-middle">中</span><span class="xgplayer-danmuspeed-mode-item xgplayer-danmuspeed-fast">快</span>
                                                     </div>
-                                                    <span>弹幕速度</span>
+                                                    <span>弹幕速度</span><span class="xgplayer-danmuspeed-slow-dot"></span><span class="xgplayer-danmuspeed-middle-dot"></span><span class="xgplayer-danmuspeed-fast-dot"></span>
                                                     <input class="xgplayer-danmuspeed-line xgplayer-danmuspeed-color xgplayer-danmuspeed-bar xgplayer-danmuspeed-gradient" type="range" min="50" max="150" step="50" value="100">
                                                   </xg-danmuspeed>
                                                   <xg-danmufont class="xgplayer-danmufont">
                                                     <div class="xgplayer-danmufont-mode">
                                                       <span class="xgplayer-danmufont-mode-item xgplayer-danmufont-small">小</span><span class="xgplayer-danmufont-mode-item xgplayer-danmufont-middle">中</span><span class="xgplayer-danmufont-mode-item xgplayer-danmufont-large">大</span>
                                                     </div>
-                                                    <span>字体大小</span>
+                                                    <span>字体大小</span><span class="xgplayer-danmufont-small-dot"></span><span class="xgplayer-danmufont-middle-dot"></span><span class="xgplayer-danmufont-large-dot"></span>
                                                     <input class="xgplayer-danmufont-line xgplayer-danmufont-color xgplayer-danmufont-bar xgplayer-danmufont-gradient" type="range" min="10" max="30" step="10" value="20">
                                                   </xg-danmufont>
                                                 </xg-panel-slider>`, {tabindex: 7}, 'xgplayer-panel')
@@ -162,7 +162,7 @@ let danmu = function () {
               hidemodeArray[keys].setAttribute('id', 'true')
               player.danmu.hide(keys)
             } else {
-              hidemodeArray[keys].style.color = '#eee'
+              hidemodeArray[keys].style.color = '#aaa'
               hidemodeArray[keys].setAttribute('id', 'false')
               player.danmu.show(keys)
             }
