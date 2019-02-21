@@ -169,8 +169,8 @@ let danmu = function () {
           })
         })
       }
-      let transparency = document.querySelector('.xgplayer-transparency-line')
-      let transparencyGradient = document.querySelector('.xgplayer-transparency-gradient')
+      let transparency = panelBtn.querySelector('.xgplayer-transparency-line')
+      let transparencyGradient = panelBtn.querySelector('.xgplayer-transparency-gradient')
       let transparencyValue = 50
       transparencyGradient.style.background = 'linear-gradient(to right, #ed1e79 0%, #ed1e79 ' + transparencyValue + '%, #aaa ' + transparencyValue + '%, #aaa)'
       transparency.addEventListener('input', function (e) {
@@ -183,7 +183,7 @@ let danmu = function () {
           item.style.opacity = transparencyValue / 100
         })
       })
-      let showarea = document.querySelector('.xgplayer-showarea-line')
+      let showarea = panelBtn.querySelector('.xgplayer-showarea-line')
       showarea.addEventListener('input', function (e) {
         e.preventDefault()
         e.stopPropagation()
@@ -192,7 +192,7 @@ let danmu = function () {
         player.config.danmu.area.end = showareaValue / 100
         player.danmu.bulletBtn.main.channel.resize()
       })
-      let danmuspeed = document.querySelector('.xgplayer-danmuspeed-line')
+      let danmuspeed = panelBtn.querySelector('.xgplayer-danmuspeed-line')
       danmuspeed.addEventListener('input', function (e) {
         e.preventDefault()
         e.stopPropagation()
@@ -201,7 +201,7 @@ let danmu = function () {
           item.duration = (200 - danmuspeedValue) * 100
         })
       })
-      let danmufont = document.querySelector('.xgplayer-danmufont-line')
+      let danmufont = panelBtn.querySelector('.xgplayer-danmufont-line')
       danmufont.addEventListener('input', function (e) {
         e.preventDefault()
         e.stopPropagation()
