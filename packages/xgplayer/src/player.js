@@ -3,6 +3,7 @@ import util from './utils/util'
 import Database from './utils/database'
 import sniffer from './utils/sniffer'
 import Errors from './error'
+import Draggabilly from 'draggabilly'
 import {
   version
 } from '../package.json'
@@ -101,11 +102,11 @@ class Player extends Proxy {
       player.video.focus()
     }
     this.root.addEventListener('mousemove', this.mousemoveFunc)
-    function playFunc () {
+    this.playFunc = function () {
       player.emit('focus')
       player.video.focus()
     }
-    player.once('play', playFunc)
+    player.once('play', this.playFunc)
 
     setTimeout(() => {
       this.emit('ready')
@@ -113,7 +114,7 @@ class Player extends Proxy {
 
     if (!this.config.keyShortcut || this.config.keyShortcut === 'on') {
       ['video', 'controls'].forEach(item => {
-        player[item].addEventListener('keydown', player.onKeydown)
+        player[item].addEventListener('keydown', function(e) {player.onKeydown(e, player)})
       })
     }
   }
@@ -125,7 +126,7 @@ class Player extends Proxy {
       this.emit('urlNull')
     }
     this.logParams.playSrc = url
-    this.playFunc = function () {
+    this.canPlayFunc = function () {
       let playPromise = player.video.play()
       if (playPromise !== undefined && playPromise) {
         playPromise.then(function () {
@@ -135,7 +136,7 @@ class Player extends Proxy {
           Player.util.addClass(player.root, 'xgplayer-is-autoplay')
         })
       }
-      player.off('canplay', player.playFunc)
+      player.off('canplay', player.canPlayFunc)
     }
     if (util.typeOf(url) === 'String') {
       this.video.src = url
@@ -158,7 +159,7 @@ class Player extends Proxy {
     }
     this.once('loadeddata', this.loadeddataFunc)
     if (this.config.autoplay) {
-      this.on('canplay', this.playFunc)
+      this.on('canplay', this.canPlayFunc)
     }
     root.insertBefore(this.video, root.firstChild)
     setTimeout(() => {
@@ -175,6 +176,7 @@ class Player extends Proxy {
   }
 
   destroy (isDelDom = true) {
+    let player = this
     let parentNode = this.root.parentNode
     clearInterval(this.bulletResizeTimer)
     for (let k in this._interval) {
@@ -188,13 +190,25 @@ class Player extends Proxy {
         this.off(evName, evFunc)
       }
     });
+    if(this.loadeddataFunc) {
+      this.off('loadeddata', this.loadeddataFunc)
+    }
+    if(this.reloadFunc) {
+      this.off('loadeddata', this.reloadFunc)
+    }
+    if(this.replayFunc) {
+      this.off('play', this.replayFunc)
+    }
+    if(this.playFunc) {
+      this.off('play', this.playFunc)
+    }
     ['focus', 'blur'].forEach(item => {
       this.off(item, this['on' + item.charAt(0).toUpperCase() + item.slice(1)])
     })
     if (!this.config.keyShortcut || this.config.keyShortcut === 'on') {
       ['video', 'controls'].forEach(item => {
         if (this[item]) {
-          this[item].removeEventListener('keydown', this.onKeydown)
+          this[item].removeEventListener('keydown', function(e) {player.onKeydown(e, player)})
         }
       })
     }
@@ -211,9 +225,9 @@ class Player extends Proxy {
         parentNode.removeChild(this.root)
       }
       for (let k in this) {
-        if (k !== 'config') {
+        // if (k !== 'config') {
           delete this[k]
-        }
+        // }
       }
       this.off('pause', destroyFunc)
     }
@@ -274,6 +288,47 @@ class Player extends Proxy {
           }
         }
       })
+    }
+  }
+
+  getPIP (player) {
+    let ro = player.root.getBoundingClientRect()
+    let Top = ro.top
+    let Left = ro.left
+    let dragLay = util.createDom('xg-pip-lay', '<div></div>', {}, 'xgplayer-pip-lay')
+    player.root.appendChild(dragLay)
+    let dragHandle = util.createDom('xg-pip-drag', '<div class="drag-handle"><span>点击按住可拖动视频</span></div>', {tabindex: 9}, 'xgplayer-pip-drag')
+    player.root.appendChild(dragHandle)
+    let draggie = new Draggabilly('.xgplayer', {
+      handle: '.drag-handle'
+    })
+    util.addClass(player.root, 'xgplayer-pip-active')
+    player.root.style.right = 0
+    player.root.style.bottom = '200px'
+    player.root.style.top = ''
+    player.root.style.left = ''
+    if (player.config.fluid) {
+      player.root.style['padding-top'] = ''
+    }
+    ['click', 'touchstart'].forEach(item => {
+      dragLay.addEventListener(item, function (e) {
+        e.preventDefault()
+        e.stopPropagation()
+        player.exitPIP(player)
+        player.root.style.top = `${Top}px`
+        player.root.style.left = `${Left}px`
+      })
+    })
+  }
+
+  exitPIP (player) {
+    util.removeClass(player.root, 'xgplayer-pip-active')
+    player.root.style.right = ''
+    player.root.style.bottom = ''
+    player.root.style.top = ''
+    player.root.style.left = ''
+    if (player.config.fluid) {
+      player.root.style['padding-top'] = `${player.config.height * 100 / player.config.width}%`
     }
   }
 
@@ -343,8 +398,8 @@ class Player extends Proxy {
     util.addClass(this.root, 'xgplayer-playing')
   }
 
-  onKeydown (event) {
-    let player = this
+  onKeydown (event, player) {
+    // let player = this
     let e = event || window.event
     if (e && (e.keyCode === 37 || e.keyCode === 38 || e.keyCode === 39 || e.keyCode === 40 || e.keyCode === 32)) {
       player.emit('focus')
